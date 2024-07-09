@@ -8,7 +8,9 @@ import { Head, Link, useForm } from '@inertiajs/react';
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
-        name: '',
+        first_name: '',
+        last_name: '',
+        phone: '',
         email: '',
         password: '',
         password_confirmation: '',
@@ -23,8 +25,20 @@ export default function Register() {
     const submit = (e) => {
         e.preventDefault();
 
+        // Ensure all required fields are set before submitting
+        setData({
+            first_name: data.first_name,
+            last_name: data.last_name,
+            phone: data.phone,
+            email: data.email,
+            role: data.role,
+            password: data.password,
+            password_confirmation: data.password_confirmation,
+        });
+
         post(route('register'));
     };
+
 
     return (
         <GuestLayout>
@@ -32,24 +46,61 @@ export default function Register() {
 
             <form onSubmit={submit}>
                 <div>
-                    <InputLabel htmlFor="name" value="Name" />
+                    <InputLabel htmlFor="first_name" value="First Name"/>
 
                     <TextInput
-                        id="name"
-                        name="name"
-                        value={data.name}
+                        id="first_name"
+                        name="first_name"
+                        type="text"
+                        value={data.first_name}
                         className="mt-1 block w-full"
-                        autoComplete="name"
+                        autoComplete="first_name"
                         isFocused={true}
-                        onChange={(e) => setData('name', e.target.value)}
+                        onChange={(e) => setData('first_name', e.target.value)}
                         required
                     />
 
-                    <InputError message={errors.name} className="mt-2" />
+                    <InputError message={errors.first_name} className="mt-2"/>
+                </div>
+
+                <div>
+                    <InputLabel htmlFor="last_name" value="Last Name"/>
+
+                    <TextInput
+                        id="last_name"
+                        name="last_name"
+                        type="text"
+                        value={data.last_name}
+                        className="mt-1 block w-full"
+                        autoComplete="last_name"
+                        isFocused={true}
+                        onChange={(e) => setData('last_name', e.target.value)}
+                        required
+                    />
+
+                    <InputError message={errors.last_name} className="mt-2"/>
+                </div>
+
+                <div>
+                    <InputLabel htmlFor="phone" value="Phone"/>
+
+                    <TextInput
+                        id="phone"
+                        name="phone"
+                        type="tel"
+                        value={data.phone}
+                        className="mt-1 block w-full"
+                        autoComplete="phone"
+                        isFocused={true}
+                        onChange={(e) => setData('phone', e.target.value)}
+                        required
+                    />
+
+                    <InputError message={errors.phone} className="mt-2"/>
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel htmlFor="email" value="Email" />
+                    <InputLabel htmlFor="email" value="Email"/>
 
                     <TextInput
                         id="email"
@@ -62,11 +113,11 @@ export default function Register() {
                         required
                     />
 
-                    <InputError message={errors.email} className="mt-2" />
+                    <InputError message={errors.email} className="mt-2"/>
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
+                    <InputLabel htmlFor="password" value="Password"/>
 
                     <TextInput
                         id="password"
@@ -79,11 +130,11 @@ export default function Register() {
                         required
                     />
 
-                    <InputError message={errors.password} className="mt-2" />
+                    <InputError message={errors.password} className="mt-2"/>
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel htmlFor="password_confirmation" value="Confirm Password" />
+                    <InputLabel htmlFor="password_confirmation" value="Confirm Password"/>
 
                     <TextInput
                         id="password_confirmation"
@@ -96,8 +147,28 @@ export default function Register() {
                         required
                     />
 
-                    <InputError message={errors.password_confirmation} className="mt-2" />
+                    <InputError message={errors.password_confirmation} className="mt-2"/>
                 </div>
+
+                <div className="mt-4">
+                    <InputLabel htmlFor="role" value="Role"/>
+
+                    <select
+                        id="role"
+                        name="role"
+                        value={data.role}
+                        className="mt-1 block w-full"
+                        onChange={(e) => setData('role', e.target.value)}
+                        required
+                    >
+                        <option value="">Select Role</option>
+                        <option value="freelancer">Freelancer</option>
+                        <option value="client">Client</option>
+                    </select>
+
+                    <InputError message={errors.role} className="mt-2"/>
+                </div>
+
 
                 <div className="flex items-center justify-end mt-4">
                     <Link
@@ -107,7 +178,7 @@ export default function Register() {
                         Already registered?
                     </Link>
 
-                    <PrimaryButton className="ms-4" disabled={processing}>
+                    <PrimaryButton className="ml-4" disabled={processing}>
                         Register
                     </PrimaryButton>
                 </div>
